@@ -70,8 +70,10 @@ jobs:
 
     - name: Install Poetry
       uses: snok/install-poetry@v1.3.3
-      with:
-        version: latest
+
+    - name: Install dependencies
+      run: |
+        poetry install --no-root
 
 #    - name: Restore cached Poetry
 #      uses: actions/cache@v3
@@ -89,14 +91,6 @@ jobs:
     - name: Lint
       run: |
         poetry run task lint
-
-    - name: Formatter
-      run: |
-        poetry run task formatter
-
-    - name: Security
-      run: |
-        poetry run task security
 
   formatter:
     needs: build
@@ -116,8 +110,10 @@ jobs:
 
       - name: Install Poetry
         uses: snok/install-poetry@v1.3.3
-        with:
-          version: latest
+
+      - name: Install dependencies
+        run: |
+          poetry install --no-root
 
       - name: Formatter
         run: |
@@ -141,8 +137,10 @@ jobs:
 
       - name: Install Poetry
         uses: snok/install-poetry@v1.3.3
-        with:
-          version: latest
+
+      - name: Install dependencies
+        run: |
+          poetry install --no-root
 
       - name: Security
         run: |
