@@ -55,8 +55,6 @@ jobs:
   lint:
     needs: build
     runs-on: ubuntu-latest
-    concurrency:
-      group: static-jobs-group
     defaults:
       run:
         working-directory: ./example-app
@@ -97,8 +95,6 @@ jobs:
   formatter:
     needs: build
     runs-on: ubuntu-latest
-    concurrency:
-      group: static-jobs-group
     defaults:
       run:
         working-directory: ./example-app
@@ -126,8 +122,6 @@ jobs:
   security:
     needs: build
     runs-on: ubuntu-latest
-    concurrency:
-      group: static-jobs-group
     defaults:
       run:
         working-directory: ./example-app
