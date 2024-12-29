@@ -28,25 +28,23 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: "3.11"
+    - name: Install Poetry
+      uses: snok/install-poetry@v1.3.4
+      with:
+        version: latest
+    - name: Install dependencies
+      run: |
+        poetry install --no-root
     - name: Cache Poetry
       uses: actions/cache@v3
       with:
         path: ~/.local/bin
         key: ${{ runner.os }}-poetry
-    - name: Install Poetry
-      if: steps.cache-poetry.outputs.cache-hit != 'true'
-      uses: snok/install-poetry@v1.3.4
-      with:
-        version: latest
     - name: Cache virtual environment
-      id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
         path: ./example-app/.venv
         key: ${{ runner.os }}-venv
-    - name: Install dependencies
-      run: |
-        poetry install --no-root
 
 
   lint:
@@ -59,6 +57,20 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+    - name: Restore cached Poetry
+      uses: actions/cache@v3
+      with:
+        path: ~/.local/bin
+        key: ${{ runner.os }}-poetry
+    - name: Restore cached venv
+      uses: actions/cache@v3
+      with:
+        path: ./example-app/.venv
+        key: ${{ runner.os }}-venv
     - name: Lint
       run: |
         poetry run task lint
