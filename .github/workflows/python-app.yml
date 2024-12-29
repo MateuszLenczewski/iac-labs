@@ -22,7 +22,8 @@ jobs:
         working-directory: ./example-app
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
     - name: Set up Python 3.11
       uses: actions/setup-python@v3
       with:
@@ -34,17 +35,12 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install --no-root
-        
-    - name: Lint
-      run: |
-        poetry run task lint
-    - name: Formatter
-      run: |
-        poetry run task formatter
-    - name: Security
-      run: |
-        poetry run task security
-
+    - name: Cache build venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: /home/runner/work/iac-labs/iac-labs/example-app/.venv
+        key: ${{ runner.os }}-venv
 
 
   lint:
@@ -55,9 +51,14 @@ jobs:
         working-directory: ./example-app
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.11"
-
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Lint
+      run: |
+        poetry run task lint
+    - name: Formatter
+      run: |
+        poetry run task formatter
+    - name: Security
+      run: |
+        poetry run task security
