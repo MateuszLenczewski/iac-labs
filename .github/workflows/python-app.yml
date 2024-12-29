@@ -39,11 +39,11 @@ jobs:
       run: |
         poetry install --no-root
 
-    - name: Cache Poetry
-      uses: actions/cache@v3
-      with:
-        path: ~/.local/bin
-        key: ${{ runner.os }}-poetry
+#    - name: Cache Poetry
+#      uses: actions/cache@v3
+#      with:
+#        path: ~/.local/bin
+#        key: ${{ runner.os }}-poetry
 
     - name: Cache virtual environment
       id: cached-poetry-dependencies
@@ -83,11 +83,11 @@ jobs:
       with:
         version: latest
 
-    - name: Restore cached Poetry
-      uses: actions/cache@v3
-      with:
-        path: ~/.local/bin
-        key: ${{ runner.os }}-poetry
+#    - name: Restore cached Poetry
+#      uses: actions/cache@v3
+#      with:
+#        path: ~/.local/bin
+#        key: ${{ runner.os }}-poetry
 
     - name: Restore cached venv
       uses: actions/cache@v3
