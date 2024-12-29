@@ -28,19 +28,25 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: "3.11"
+    - name: Cache Poetry
+      uses: actions/cache@v3
+      with:
+        path: ~/.local/bin
+        key: ${{ runner.os }}-poetry
     - name: Install Poetry
+      if: steps.cache-poetry.outputs.cache-hit != 'true'
       uses: snok/install-poetry@v1.3.4
       with:
-        version: latest       
-    - name: Install dependencies
-      run: |
-        poetry install --no-root
-    - name: Cache build venv
+        version: latest
+    - name: Cache virtual environment
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
-        path: /home/runner/work/iac-labs/iac-labs/example-app/.venv
+        path: ./example-app/.venv
         key: ${{ runner.os }}-venv
+    - name: Install dependencies
+      run: |
+        poetry install --no-root
 
 
   lint:
