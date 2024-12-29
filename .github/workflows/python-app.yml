@@ -52,43 +52,6 @@ jobs:
         path: /home/runner/work/iac-labs/iac-labs/example-app/.venv
         key: ${{ runner.os }}-venv
 
-    # todo delete
-    - name: Lint
-      run: |
-        poetry run task lint
-    - name: Formatter
-      run: |
-        poetry run task formatter
-    - name: Security
-      run: |
-        poetry run task security
-
-#  lint:
-#    needs: build
-#    runs-on: ubuntu-latest
-#    defaults:
-#      run:
-#        working-directory: ./example-app
-#
-#    steps:
-#    - name: Checkout repository
-#      uses: actions/checkout@v4
-#    - name: Set up Python 3.11
-#      uses: actions/setup-python@v3
-#      with:
-#        python-version: "3.11"
-#    - name: Restore cached Poetry
-#      uses: actions/cache@v3
-#      with:
-#        path: ~/.local/bin
-#        key: ${{ runner.os }}-poetry
-#    - name: Restore cached venv
-#      uses: actions/cache@v3
-#      with:
-#        path: ./example-app/.venv
-#        key: ${{ runner.os }}-venv
-#    - name: Add Poetry to PATH
-#      run: echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
 #    - name: Lint
 #      run: |
 #        poetry run task lint
@@ -98,3 +61,39 @@ jobs:
 #    - name: Security
 #      run: |
 #        poetry run task security
+
+  static-checks:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./example-app
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+    - name: Restore cached Poetry
+      uses: actions/cache@v3
+      with:
+        path: ~/.local/bin
+        key: ${{ runner.os }}-poetry
+    - name: Restore cached venv
+      uses: actions/cache@v3
+      with:
+        path: ./example-app/.venv
+        key: ${{ runner.os }}-venv
+    - name: Add Poetry to PATH
+      run: echo "${{ github.workspace }}/.local/bin" >> $GITHUB_PATH
+    - name: Lint
+      run: |
+        poetry run task lint
+    - name: Formatter
+      run: |
+        poetry run task formatter
+    - name: Security
+      run: |
+        poetry run task security
